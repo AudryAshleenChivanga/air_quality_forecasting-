@@ -49,7 +49,7 @@ The model is compiled with the **Adam optimizer** (learning rate 0.001), **MSE l
 ## Experiment Results
 ###  Experiments and RMSE Analysis
 
-We conducted 14 LSTM experiments with varying architectural configurations, including different numbers of LSTM layers, hidden units, dropout rates, and learning rates. The goal was to minimize the **Root Mean Squared Error (RMSE)** on the training data, which measures how well the model's predictions match the actual PM2.5 values.
+We conducted 15 LSTM experiments with varying architectural configurations, including different numbers of LSTM layers, hidden units, dropout rates, and learning rates. The goal was to minimize the **Root Mean Squared Error (RMSE)** on the training data, which measures how well the model's predictions match the actual PM2.5 values.
 
 **Root Mean Squared Error (RMSE) Formula:**
  RMSE is a measure of how far the model's predictions are from the actual values, on average. It is calculated by taking the square root of the average of the squared differences between predicted and actual values.
@@ -90,15 +90,7 @@ We conducted 14 LSTM experiments with varying architectural configurations, incl
 
 ## Conclusion and Findings
 ## Evaluation: RMSE Analysis
-
-**Root Mean Squared Error (RMSE)** is a common regression metric that measures the square root of the average squared differences between predicted and actual values. It is defined as:
-
-\[
-\text{RMSE} = \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 }
-\]
-
-where \( y_i \) is the actual value, \( \hat{y}_i \) is the predicted value, and \( n \) is the number of observations.
-
+RMSE is a measure of how far the model's predictions are from the actual values, on average. It is calculated by taking the square root of the average of the squared differences between predicted and actual values.
 ### RMSE Trends Across Experiments
 
 We ran 15 LSTM model configurations with varying layer sizes, dropout rates, and learning rates. The model with configuration `[128, 64, 32]`, dropout of `0.3`, and learning rate of `0.001` performed best with a **Train RMSE of 53.75**. Shallower models and those with higher dropout or fewer units generally performed worse, suggesting they could not capture the underlying temporal patterns as effectively.
