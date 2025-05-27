@@ -74,7 +74,7 @@ We conducted 15 LSTM experiments with varying architectural configurations, incl
 | Exp_12     | [128, 64]                           | 0.4     | 0.001          | 59.60       |
 | Exp_13     | [64]                                | 0.3     | 0.001          | 60.35       |
 | Exp_14     | [128, 64, 32] (No BatchNorm)        | 0.3     | 0.001          | 60.36       |
-
+wondering about my 15nth , haha it exploded!
 ---
 
 ###  Observations & Insights
