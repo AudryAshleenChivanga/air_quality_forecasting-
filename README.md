@@ -52,15 +52,7 @@ The model is compiled with the **Adam optimizer** (learning rate 0.001), **MSE l
 We conducted 14 LSTM experiments with varying architectural configurations, including different numbers of LSTM layers, hidden units, dropout rates, and learning rates. The goal was to minimize the **Root Mean Squared Error (RMSE)** on the training data, which measures how well the model's predictions match the actual PM2.5 values.
 
 **Root Mean Squared Error (RMSE) Formula:**
-
-\[
-\text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2}
-\]
-
-Where:  
-- \( \hat{y}_i \): predicted PM2.5 value  
-- \( y_i \): actual PM2.5 value  
-- \( n \): number of observations
+ RMSE is a measure of how far the model's predictions are from the actual values, on average. It is calculated by taking the square root of the average of the squared differences between predicted and actual values.
 
 ---
 
