@@ -85,7 +85,6 @@ We conducted 15 LSTM experiments with varying architectural configurations, incl
 - Batch normalization helped stabilize training; removing it (Exp_14) slightly degraded performance.
 - Regularization via dropout was crucial to preventing overfitting, especially in deeper configurations.
 
-> A bar chart comparing RMSE values for each experiment is provided below for visual interpretation.
 
 
 ## Conclusion and Findings
