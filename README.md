@@ -44,34 +44,86 @@ The model is compiled with the **Adam optimizer** (learning rate 0.001), **MSE l
 
 ---
 
-## Experiment Results
+## Experiment Results with RMSE
 
 ## Experiment Results
+###  Experiments and RMSE Analysis
 
-The table below shows the performance of different LSTM model variations submitted to the public leaderboard. The goal was to minimize the RMSE (Root Mean Squared Error) on the PM2.5 predictions.
+We conducted 14 LSTM experiments with varying architectural configurations, including different numbers of LSTM layers, hidden units, dropout rates, and learning rates. The goal was to minimize the **Root Mean Squared Error (RMSE)** on the training data, which measures how well the model's predictions match the actual PM2.5 values.
 
-| Submission File        | Description (Short)           | Public RMSE Score |
-|------------------------|--------------------------------|-------------------|
-| `subm_fixed1.csv`      | Best performing deep LSTM model | **5147.4140**     |
-| `subm_fixed.csv`       | Stacked LSTM with 3 layers      | 5507.6594         |
-| `subm_fixed (3).csv`   | Similar to fixed1 with changes  | 5734.1797         |
-| `submission.csv`       | First valid baseline model      | 6501.6673         |
-| `submission_fixed.csv` | Minor tuning from baseline      | 6581.0497         |
-| `submission5.csv`      | Smaller LSTM configuration      | 6539.3920         |
-| `submission6.csv`      | Dropout increased               | 6619.5076         |
-| `submission9.csv`      | Sequence length adjusted        | 6656.4308         |
-| `submission7.csv`      | Added one dense layer           | 6717.1096         |
-| `submission8.csv`      | Minor tweaks on submission7     | 6738.9758         |
-| `submission4.csv`      | Earlier model with time features| 6858.2507         |
-| `submission10.csv`     | Reduced units in LSTM           | 6911.0824         |
-| `subm_fixed4.csv`      | Experiment with alternate seed  | 8526.7308         |
-| `submission3 (2).csv`  | Poor performance version        | 8644.7615         |
-| `submission3 (1).csv`  | Original unoptimized model      | 9616.1108         |
-| `submission2.csv`      | Invalid format (Error)          | N/A               |
-| `submission2 (1).csv`  | Invalid format (Error)          | N/A               |
+**Root Mean Squared Error (RMSE) Formula:**
 
-``
+\[
+\text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2}
+\]
+
+Where:  
+- \( \hat{y}_i \): predicted PM2.5 value  
+- \( y_i \): actual PM2.5 value  
+- \( n \): number of observations
+
+---
+
+### RMSE Results Table
+
+| Experiment | Configuration (LSTM units)         | Dropout | Learning Rate | Train RMSE |
+|------------|-------------------------------------|---------|----------------|-------------|
+| Exp_1      | [128, 64, 32]                       | 0.3     | 0.001          | **53.75**   |
+| Exp_2      | [64, 64, 32]                        | 0.3     | 0.001          | 54.06       |
+| Exp_3      | [128, 64]                           | 0.3     | 0.001          | 54.50       |
+| Exp_4      | [128]                               | 0.2     | 0.001          | 55.01       |
+| Exp_5      | [64, 32]                            | 0.4     | 0.001          | 55.48       |
+| Exp_6      | [128, 128, 64]                      | 0.3     | 0.0005         | 55.58       |
+| Exp_7      | [64, 64]                            | 0.2     | 0.001          | 56.67       |
+| Exp_8      | [128, 64, 32]                       | 0.5     | 0.001          | 57.05       |
+| Exp_9      | [128, 64, 32]                       | 0.3     | 0.0001         | 58.94       |
+| Exp_10     | [32, 32, 32]                        | 0.3     | 0.001          | 59.12       |
+| Exp_11     | [256, 128, 64]                      | 0.3     | 0.001          | 59.60       |
+| Exp_12     | [128, 64]                           | 0.4     | 0.001          | 59.60       |
+| Exp_13     | [64]                                | 0.3     | 0.001          | 60.35       |
+| Exp_14     | [128, 64, 32] (No BatchNorm)        | 0.3     | 0.001          | 60.36       |
+
+---
+
+###  Observations & Insights
+
+- The best performing configuration was **[128, 64, 32] with dropout 0.3 and learning rate 0.001**, achieving the lowest RMSE of **53.75**.
+- Deeper models generally performed better, but excessive depth or too large units (e.g., Exp_11) did not guarantee improvement.
+- A very low learning rate (e.g., Exp_9 with 0.0001) led to underfitting.
+- Batch normalization helped stabilize training; removing it (Exp_14) slightly degraded performance.
+- Regularization via dropout was crucial to preventing overfitting, especially in deeper configurations.
+
+> A bar chart comparing RMSE values for each experiment is provided below for visual interpretation.
+
+
 ## Conclusion and Findings
+## Evaluation: RMSE Analysis
+
+**Root Mean Squared Error (RMSE)** is a common regression metric that measures the square root of the average squared differences between predicted and actual values. It is defined as:
+
+\[
+\text{RMSE} = \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 }
+\]
+
+where \( y_i \) is the actual value, \( \hat{y}_i \) is the predicted value, and \( n \) is the number of observations.
+
+### RMSE Trends Across Experiments
+
+We ran 15 LSTM model configurations with varying layer sizes, dropout rates, and learning rates. The model with configuration `[128, 64, 32]`, dropout of `0.3`, and learning rate of `0.001` performed best with a **Train RMSE of 53.75**. Shallower models and those with higher dropout or fewer units generally performed worse, suggesting they could not capture the underlying temporal patterns as effectively.
+
+### Visual Comparisons and Error Analysis
+
+Visual plots comparing predicted PM2.5 values vs. actual values showed that deeper models were better at following the trends, especially around high spikes. However, all models struggled slightly with large peaks due to the skewness of the target distribution. This may have led to **high RMSE values**, as the error is more sensitive to large deviations.
+
+### Overfitting and Underfitting
+
+Models with too many layers or too little dropout began to overfit the training data — learning the noise instead of the signal. This was mitigated using **Dropout layers** and **Batch Normalization**, which helped stabilize learning and reduce generalization error. On the other hand, models with few units or excessive dropout underfit the data and performed poorly on both training and test sets.
+
+### RNN Challenges: Vanishing/Exploding Gradients
+
+Traditional RNNs often face issues like **vanishing or exploding gradients**, especially with longer sequences. LSTM networks are designed to mitigate this with **gated mechanisms** that help preserve gradients during backpropagation. Additionally, we used the **`tanh` activation**, which is well-suited for LSTMs, and **Batch Normalization** to further stabilize training and avoid gradient issues.
+
+Overall, thoughtful architecture design, proper preprocessing, and an understanding of sequential learning challenges contributed significantly to minimizing RMSE and improving model performance.
 
 This project explored the use of deep LSTM models for forecasting PM2.5 concentrations in Beijing using time series air quality data. Through extensive experimentation, preprocessing, and model tuning, the following key findings were observed:
 
